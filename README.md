@@ -62,4 +62,42 @@ Based on the design below (see diagram in repo):
 ---
 
 ## 📂 Folder Structure (Planned)
+redizego/
+├── src/
+│ ├── controller/
+│ ├── service/
+│ ├── model/
+│ ├── repository/
+│ ├── config/
+│ └── strategy/
+├── resources/
+│ └── application.yml
+├── pom.xml
+└── README.md
+
+🧪 Testing & Profiles
+Profiles supported: dev, prod
+
+Use @Profile for env-specific configurations
+
+Swagger available at: http://localhost:8080/swagger-ui.html
+
+🧭 Roadmap
+ JWT/OAuth login system
+
+ Cab booking API
+
+ Admin dashboard
+
+ Offline booking (via GPS/SMS)
+
+ Notification service with WebSockets
+
+ Payment gateway integration
+
+🧑‍💻 Author
+Ayush Sharma
+Java Backend Developer | Spring Boot Enthusiast
+
+
 
