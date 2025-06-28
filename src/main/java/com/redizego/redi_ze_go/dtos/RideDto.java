@@ -24,9 +24,9 @@ public class RideDto {
 
     private LocalDateTime createdTime;
 
-    private Rider rider;
+    private RiderDto rider;
 
-    private Driver driver;
+    private DriverDto driver;
 
     private PaymentMethods paymentMethod;
 
