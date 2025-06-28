@@ -32,7 +32,7 @@ Redizego is a comprehensive cab booking system that connects riders with drivers
 ## 🛠 Tech Stack
 
 - **Language**: Java 21
-- **Framework**: Spring Boot 3.x
+- **Framework**: Spring Boot 3.5.3
 - **Persistence**: 
   - Spring Data JPA
   - PostgreSQL with PostGIS
