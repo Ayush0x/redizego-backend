@@ -19,17 +19,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
-    private String username;
+    private String name;
 
     @Column(unique = true)
-    @NonNull
     private String email;
 
-    @NonNull
     private String password;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
-    private Set<Roles> roles;
+    private Set<Roles> role;
 }

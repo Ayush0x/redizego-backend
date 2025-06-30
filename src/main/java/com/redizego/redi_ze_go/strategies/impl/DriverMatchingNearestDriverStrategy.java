@@ -1,17 +1,22 @@
 package com.redizego.redi_ze_go.strategies.impl;
 
-import com.redizego.redi_ze_go.dtos.RideRequestDto;
 import com.redizego.redi_ze_go.entities.Driver;
-import com.redizego.redi_ze_go.strategies.DriverMatchigStrategy;
+import com.redizego.redi_ze_go.entities.RideRequest;
+import com.redizego.redi_ze_go.repositories.DriverRepository;
+import com.redizego.redi_ze_go.strategies.DriverMatchingStrategy;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class DriverMatchingNearestDriverStrategy implements DriverMatchigStrategy {
+@Service("driverMatchingNearestDriverStrategy")
+@RequiredArgsConstructor
+public class DriverMatchingNearestDriverStrategy implements DriverMatchingStrategy {
+
+    private final DriverRepository driverRepository;
 
     @Override
-    public List<Driver> findMatchingDrivers(RideRequestDto rideRequestDto) {
-        return List.of();
+    public List<Driver> findMatchingDrivers(RideRequest rideRequest) {
+        return driverRepository.findTenNearestDrivers(rideRequest.getPickupLocation());
     }
 }

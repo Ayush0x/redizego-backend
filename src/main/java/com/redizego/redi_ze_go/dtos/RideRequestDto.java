@@ -19,22 +19,16 @@ public class RideRequestDto {
 
     private Long id;
 
-//    @Column(columnDefinition = "geometry(Point, 4326)")
-    private Point pickupLocation;
+    private PointDto pickupLocation;
 
-//    @Column(columnDefinition = "geometry(Point, 4326)")
-    private Point destinationLocation;
+    private PointDto destinationLocation;
 
-//    @CreationTimestamp
     private LocalDateTime requestTime;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
     private RiderDto rider;
 
-//    @Enumerated(EnumType.STRING)
     private PaymentMethods paymentMethod;
 
-//    @Enumerated(EnumType.STRING)
     private RideRequestStatus rideRequestStatus;
 
 }
