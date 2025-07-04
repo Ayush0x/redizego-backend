@@ -1,7 +1,6 @@
 package com.redizego.redi_ze_go.entities;
 
 import com.redizego.redi_ze_go.entities.enums.PaymentMethods;
-//import com.redizego.redi_ze_go.entities.enums.RideRequestStatus;
 import com.redizego.redi_ze_go.entities.enums.RideStatus;
 import jakarta.persistence.*;
 import lombok.*;

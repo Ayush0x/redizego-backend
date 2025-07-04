@@ -1,13 +1,10 @@
 package com.redizego.redi_ze_go.dtos;
 
-import com.redizego.redi_ze_go.entities.Driver;
-import com.redizego.redi_ze_go.entities.Rider;
 import com.redizego.redi_ze_go.entities.enums.PaymentMethods;
 import com.redizego.redi_ze_go.entities.enums.RideStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 
@@ -18,11 +15,11 @@ public class RideDto {
 
     private Long id;
 
-    private Point pickupLocation;
+    private PointDto pickupLocation;
 
-    private Point dropOffLocation;
+    private PointDto destinationLocation;
 
-    private LocalDateTime createdTime;
+    private LocalDateTime requestTime;
 
     private RiderDto rider;
 
@@ -32,11 +29,12 @@ public class RideDto {
 
     private RideStatus  rideStatus;
 
+    private String otp;
+
     private Double fare;
 
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
 
-    private String otp;
 }

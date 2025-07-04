@@ -1,14 +1,10 @@
 package com.redizego.redi_ze_go.dtos;
 
-import com.redizego.redi_ze_go.entities.Rider;
 import com.redizego.redi_ze_go.entities.enums.PaymentMethods;
 import com.redizego.redi_ze_go.entities.enums.RideRequestStatus;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 
@@ -23,11 +19,13 @@ public class RideRequestDto {
 
     private PointDto destinationLocation;
 
+    private PaymentMethods paymentMethod;
+
     private LocalDateTime requestTime;
 
     private RiderDto rider;
 
-    private PaymentMethods paymentMethod;
+    private Double fare;
 
     private RideRequestStatus rideRequestStatus;
 

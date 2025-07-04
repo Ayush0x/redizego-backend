@@ -24,6 +24,4 @@ public class Wallet {
 
     @OneToMany(mappedBy = "wallet",fetch = FetchType.LAZY)
     private Set<WalletTransactions> walletTransactions;
-
-
 }

@@ -1,6 +1,5 @@
 package com.redizego.redi_ze_go.strategies.impl;
 
-import com.redizego.redi_ze_go.dtos.RideRequestDto;
 import com.redizego.redi_ze_go.entities.RideRequest;
 import com.redizego.redi_ze_go.services.DistanceService;
 import com.redizego.redi_ze_go.strategies.RideFareCalculationStrategy;
@@ -19,7 +18,5 @@ public class RideFareDefaultFareCalculationStrategy implements RideFareCalculati
         double distance=distanceService.calculateDistance(rideRequest.getPickupLocation(),rideRequest.getDestinationLocation());
 
         return distance * RIDE_FARE_MULTIPLIER;
-
-//        return 0;
     }
 }
