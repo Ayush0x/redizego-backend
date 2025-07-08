@@ -6,6 +6,8 @@ import com.redizego.redi_ze_go.dtos.RideRequestDto;
 import com.redizego.redi_ze_go.dtos.RiderDto;
 import com.redizego.redi_ze_go.entities.Rider;
 import com.redizego.redi_ze_go.entities.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ public interface RiderService {
 
     RiderDto getMyProfile();
 
-    List<RideDto> getAllRides();
+    Page<RideDto> getAllRides(PageRequest pageRequest);
 
     Rider createNewRider(User user);
 

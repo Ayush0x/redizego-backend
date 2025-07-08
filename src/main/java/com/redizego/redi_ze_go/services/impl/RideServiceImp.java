@@ -3,6 +3,7 @@ package com.redizego.redi_ze_go.services.impl;
 import com.redizego.redi_ze_go.entities.Driver;
 import com.redizego.redi_ze_go.entities.Ride;
 import com.redizego.redi_ze_go.entities.RideRequest;
+import com.redizego.redi_ze_go.entities.Rider;
 import com.redizego.redi_ze_go.entities.enums.RideRequestStatus;
 import com.redizego.redi_ze_go.entities.enums.RideStatus;
 import com.redizego.redi_ze_go.repositories.RideRepository;
@@ -52,13 +53,13 @@ public class RideServiceImp implements RideService {
     }
 
     @Override
-    public Page<Ride> getAlRidesOfRider(Long riderId, PageRequest pageRequest) {
-        return null;
+    public Page<Ride> getAllRidesOfRider(Rider rider, PageRequest pageRequest) {
+        return rideRepository.findByRider(rider,pageRequest);
     }
 
     @Override
-    public Page<Ride> getAlRidesOfDriver(Long driverId, PageRequest pageRequest) {
-        return null;
+    public Page<Ride> getAllRidesOfDriver(Driver driver, PageRequest pageRequest) {
+        return rideRepository.findByDriver(driver,pageRequest);
     }
 
     private String generateOtp() {

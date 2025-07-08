@@ -10,6 +10,7 @@ import com.redizego.redi_ze_go.exceptions.RuntimeConflictException;
 import com.redizego.redi_ze_go.repositories.UserRepository;
 import com.redizego.redi_ze_go.services.AuthService;
 import com.redizego.redi_ze_go.services.RiderService;
+import com.redizego.redi_ze_go.services.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class AuthServiceImpl implements AuthService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final RiderService riderService;
+    private final WalletService walletService;
 
     @Override
     public String login(String email, String password) {
@@ -42,7 +44,9 @@ public class AuthServiceImpl implements AuthService {
         User savedUser=userRepository.save(user);
 
         Rider rider=riderService.createNewRider(savedUser);
-        // TODO add wallet related logic
+
+        walletService.createNewWallet(savedUser);
+
         return modelMapper.map(savedUser,UserDto.class);
     }
 

@@ -109,3 +109,8 @@ INSERT INTO user_role (user_id, role) VALUES
                                             (30, 'DRIVER');
 
 insert into rider (id, user_id, rating) values (1, 1, 4.9);
+
+insert into wallet(id, user_id, balance) values
+                                             (1, 1, 100),
+                                             (2,2,200),
+                                             (3,3,300);

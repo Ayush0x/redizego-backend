@@ -4,8 +4,8 @@ import com.redizego.redi_ze_go.dtos.DriverDto;
 import com.redizego.redi_ze_go.dtos.RideDto;
 import com.redizego.redi_ze_go.dtos.RiderDto;
 import com.redizego.redi_ze_go.entities.Driver;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 public interface DriverService {
 
@@ -21,8 +21,10 @@ public interface DriverService {
 
     DriverDto getMyProfile();
 
-    List<RideDto> getAllRides();
+    Page<RideDto> getAllRides(PageRequest pageRequest);
 
     Driver getCurrentDriver();
+
+    Driver updateDriverAvailability(Driver driver,boolean isAvailable);
 
 }
