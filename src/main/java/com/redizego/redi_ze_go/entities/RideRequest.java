@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(indexes = {
+        @Index(name = "idx_rider",columnList = "rider_id")
+})
 public class RideRequest {
 
     @Id

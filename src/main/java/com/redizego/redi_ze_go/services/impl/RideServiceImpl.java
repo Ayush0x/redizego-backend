@@ -19,7 +19,7 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class RideServiceImp implements RideService {
+public class RideServiceImpl implements RideService {
 
     private final RideRepository rideRepository;
     private final RideRequestService rideRequestService;

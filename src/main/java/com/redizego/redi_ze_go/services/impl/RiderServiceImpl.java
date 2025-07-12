@@ -11,6 +11,7 @@ import com.redizego.redi_ze_go.exceptions.ResourceNotFoundException;
 import com.redizego.redi_ze_go.repositories.RideRequestRepository;
 import com.redizego.redi_ze_go.repositories.RiderRepository;
 import com.redizego.redi_ze_go.services.DriverService;
+import com.redizego.redi_ze_go.services.RatingService;
 import com.redizego.redi_ze_go.services.RideService;
 import com.redizego.redi_ze_go.services.RiderService;
 import com.redizego.redi_ze_go.strategies.RideStrategyManager;
@@ -35,6 +36,7 @@ public class RiderServiceImpl implements RiderService {
     private final RiderRepository riderRepository;
     private final RideService rideService;
     private final DriverService driverService;
+    private final RatingService ratingService;
 
     @Override
     @Transactional
@@ -77,7 +79,18 @@ public class RiderServiceImpl implements RiderService {
 
     @Override
     public DriverDto rateDriver(Long driverId, Integer rating) {
-        return null;
+        Ride ride=rideService.getRideById(driverId);
+        Rider rider=getCurrentRider();
+
+        if(!rider.equals(ride.getRider())) {
+            throw new RuntimeException("Rider cannot rate this driver as he has not requested the request");
+        }
+
+        if(!ride.getRideStatus().equals(RideStatus.ENDED)){
+            throw new RuntimeException("Rider cannot rate this driver as the ride status is not ENDED "+ride.getRideStatus());
+        }
+
+        return ratingService.rateDriver(ride,rating);
     }
 
     @Override

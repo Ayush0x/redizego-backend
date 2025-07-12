@@ -1,8 +1,5 @@
 package com.redizego.redi_ze_go.services.impl;
 
-import com.redizego.redi_ze_go.dtos.RideDto;
-import com.redizego.redi_ze_go.dtos.WalletDto;
-import com.redizego.redi_ze_go.dtos.WalletTransactionDto;
 import com.redizego.redi_ze_go.entities.Ride;
 import com.redizego.redi_ze_go.entities.User;
 import com.redizego.redi_ze_go.entities.Wallet;

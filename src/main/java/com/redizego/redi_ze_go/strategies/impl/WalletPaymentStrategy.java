@@ -6,7 +6,6 @@ import com.redizego.redi_ze_go.entities.Rider;
 import com.redizego.redi_ze_go.entities.enums.PaymentStatus;
 import com.redizego.redi_ze_go.entities.enums.TransactionMethods;
 import com.redizego.redi_ze_go.repositories.PaymentRepository;
-import com.redizego.redi_ze_go.services.PaymentService;
 import com.redizego.redi_ze_go.services.WalletService;
 import com.redizego.redi_ze_go.strategies.PaymentStrategy;
 import lombok.RequiredArgsConstructor;

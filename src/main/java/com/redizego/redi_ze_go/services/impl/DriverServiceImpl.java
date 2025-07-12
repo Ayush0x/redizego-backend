@@ -8,12 +8,8 @@ import com.redizego.redi_ze_go.entities.Ride;
 import com.redizego.redi_ze_go.entities.RideRequest;
 import com.redizego.redi_ze_go.entities.enums.RideRequestStatus;
 import com.redizego.redi_ze_go.entities.enums.RideStatus;
-//import com.redizego.redi_ze_go.exceptions.ResourceNotFoundException;
 import com.redizego.redi_ze_go.repositories.DriverRepository;
-import com.redizego.redi_ze_go.services.DriverService;
-import com.redizego.redi_ze_go.services.PaymentService;
-import com.redizego.redi_ze_go.services.RideRequestService;
-import com.redizego.redi_ze_go.services.RideService;
+import com.redizego.redi_ze_go.services.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -33,6 +29,7 @@ public class DriverServiceImpl implements DriverService {
     private final RideService rideService;
     private final ModelMapper modelMapper;
     private final PaymentService paymentService;
+    private final RatingService ratingService;
 
     @Override
     public RideDto cancelRide(Long rideId) {
@@ -74,6 +71,7 @@ public class DriverServiceImpl implements DriverService {
         Ride updatedRide=rideService.updateRideStatus(ride,RideStatus.ONGOING);
 
         paymentService.createNewPayment(updatedRide);
+        ratingService.createNewRating(updatedRide);
 
         return modelMapper.map(updatedRide,RideDto.class);
     }
@@ -103,7 +101,19 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public RiderDto rateRider(Long riderId, Integer rating) {
-        return null;
+        Ride ride=rideService.getRideById(riderId);
+
+        Driver driver=getCurrentDriver();
+
+        if(!driver.equals(ride.getDriver())){
+            throw new RuntimeException("Driver cannot rate this rider as he has not accepted the request");
+        }
+
+        if(!ride.getRideStatus().equals(RideStatus.ENDED)){
+            throw new RuntimeException("Driver cannot rate this rider as the ride status is not ENDED "+ride.getRideStatus());
+        }
+
+        return ratingService.rateRider(ride,rating);
     }
 
     @Override

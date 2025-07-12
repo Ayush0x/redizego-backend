@@ -12,7 +12,10 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
+@Table(name = "users",
+indexes = {
+        @Index(name = "idx_user_email",columnList = "email")
+})
 public class User {
 
     @Id

@@ -22,6 +22,8 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
 
         if(request.getURI().getPath().contains("/v3/api-docs")) return body;
 
+        if(request.getURI().getPath().contains("/actuator")) return body;
+
         if(body instanceof ApiError) {
             return body;
         }

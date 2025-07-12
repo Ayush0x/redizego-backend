@@ -2,11 +2,9 @@ package com.redizego.redi_ze_go.strategies.impl;
 
 import com.redizego.redi_ze_go.entities.Driver;
 import com.redizego.redi_ze_go.entities.Payment;
-import com.redizego.redi_ze_go.entities.Wallet;
 import com.redizego.redi_ze_go.entities.enums.PaymentStatus;
 import com.redizego.redi_ze_go.entities.enums.TransactionMethods;
 import com.redizego.redi_ze_go.repositories.PaymentRepository;
-import com.redizego.redi_ze_go.services.PaymentService;
 import com.redizego.redi_ze_go.services.WalletService;
 import com.redizego.redi_ze_go.strategies.PaymentStrategy;
 import lombok.RequiredArgsConstructor;
