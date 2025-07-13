@@ -10,12 +10,17 @@ import com.redizego.redi_ze_go.entities.enums.Roles;
 import com.redizego.redi_ze_go.exceptions.ResourceNotFoundException;
 import com.redizego.redi_ze_go.exceptions.RuntimeConflictException;
 import com.redizego.redi_ze_go.repositories.UserRepository;
+import com.redizego.redi_ze_go.security.JWTService;
 import com.redizego.redi_ze_go.services.AuthService;
 import com.redizego.redi_ze_go.services.DriverService;
 import com.redizego.redi_ze_go.services.RiderService;
 import com.redizego.redi_ze_go.services.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,10 +35,21 @@ public class AuthServiceImpl implements AuthService {
     private final RiderService riderService;
     private final WalletService walletService;
     private final DriverService driverService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JWTService jwtService;
 
     @Override
-    public String login(String email, String password) {
-        return "";
+    public String[] login(String email, String password) {
+        Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email,password));
+
+        User user=(User) authentication.getPrincipal();
+
+        String accessToken=jwtService.generateAccessToken(user);
+        String refreshToken=jwtService.generateRefreshToken(user);
+
+
+        return new String[]{accessToken,refreshToken};
     }
 
     @Override
@@ -45,9 +61,10 @@ public class AuthServiceImpl implements AuthService {
 
         User user=modelMapper.map(signupDto,User.class);
         user.setRole(Set.of(Roles.RIDER));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser=userRepository.save(user);
 
-        Rider rider=riderService.createNewRider(savedUser);
+        riderService.createNewRider(savedUser);
 
         walletService.createNewWallet(savedUser);
 
@@ -80,5 +97,14 @@ public class AuthServiceImpl implements AuthService {
 
     }
 
-    //TODO: implement driver onboarding or rather make the onboarding process such that until admin confirms driver is genuine, driver cannot be onboarded.
+    @Override
+    public String refreshToken(String refreshToken) {
+        Long userId=jwtService.getUserIdFromToken(refreshToken);
+        User user=userRepository.findById(userId)
+                .orElseThrow(()->
+                        new ResourceNotFoundException("User not found with id "+userId));
+        String accessToken=jwtService.generateAccessToken(user);
+        return accessToken;
+    }
+
 }

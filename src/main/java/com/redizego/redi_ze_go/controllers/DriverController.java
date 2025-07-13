@@ -7,11 +7,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/driver")
 @RequiredArgsConstructor
+@Secured("ROLE_DRIVER")
 public class DriverController {
 
     private final DriverService driverService;
@@ -36,10 +38,10 @@ public class DriverController {
         return ResponseEntity.ok().body(driverService.cancelRide(rideId));
     }
 
-    @PostMapping("/rate-rider/{rider-id}")
-    public ResponseEntity<RiderDto> rateRider(@RequestBody RatingDto ratingDto){
-        return ResponseEntity.ok().body(driverService.rateRider(ratingDto.getRideId(),ratingDto.getRating()));
-    }
+//    @PostMapping("/rate-rider/{rider-id}")
+//    public ResponseEntity<RiderDto> rateRider(@RequestBody RatingDto ratingDto){
+//        return ResponseEntity.ok().body(driverService.rateRider(ratingDto.getRideId(),ratingDto.getRating()));
+//    }
 
     @GetMapping("/my-profile")
     public ResponseEntity<DriverDto> getMyProfile(){

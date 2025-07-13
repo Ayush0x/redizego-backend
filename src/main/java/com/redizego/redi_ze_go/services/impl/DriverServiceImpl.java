@@ -6,6 +6,7 @@ import com.redizego.redi_ze_go.dtos.RiderDto;
 import com.redizego.redi_ze_go.entities.Driver;
 import com.redizego.redi_ze_go.entities.Ride;
 import com.redizego.redi_ze_go.entities.RideRequest;
+import com.redizego.redi_ze_go.entities.User;
 import com.redizego.redi_ze_go.entities.enums.RideRequestStatus;
 import com.redizego.redi_ze_go.entities.enums.RideStatus;
 import com.redizego.redi_ze_go.repositories.DriverRepository;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -155,9 +157,11 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver getCurrentDriver() {
-        return driverRepository.findById(2L)
+        User user= (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return driverRepository.findByUser(user)
                 .orElseThrow(()->
-                        new RuntimeException("Driver not found with id "+ 2L));
+                        new RuntimeException("Driver not found with id "+ user.getId()));
     }
 
     @Override
