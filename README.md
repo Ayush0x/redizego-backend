@@ -6,9 +6,9 @@
 
 Redizego is a comprehensive cab booking system that connects riders with drivers in real-time. This project follows modern software architecture principles and leverages the power of Spring Boot to deliver a robust backend service.
 
-## 🔄 Current Phase: Prototype 1
+## 🔄 Current Phase: Phase 2 - Core Functionality ✅
 
-### ✅ Completed
+### ✅ Phase 1 Completed
 - **Database Schema**: Complete entity relationships and data model
 - **JPA Entities**:
   - User (Rider/Driver)
@@ -24,57 +24,86 @@ Redizego is a comprehensive cab booking system that connects riders with drivers
   - Modular package organization
   - Clear separation of concerns
 
-### 🔄 In Progress
-- Service layer implementation
-- Business logic development
-- API endpoints
+### ✅ Phase 2 Completed
+- **Complete REST API Implementation**:
+  - `AuthController`: User authentication, signup, login, driver onboarding
+  - `RiderController`: Ride requests, cancellation, profile management, rating
+  - `DriverController`: Ride acceptance, start/end rides, profile management, rating
+  - Full CRUD operations with proper error handling
 
-## 🛠 Tech Stack
+- **Spring Security with JWT Authentication**:
+  - Role-based access control (RIDER, DRIVER, ADMIN)
+  - JWT token generation and validation
+  - Refresh token mechanism with HTTP-only cookies
+  - Method-level security annotations
+
+- **API Documentation**:
+  - Swagger UI integration with OpenAPI 3.0
+  - Interactive API documentation available at `/swagger-ui.html`
+  - Comprehensive endpoint documentation with request/response examples
+
+- **Email Service Integration**:
+  - Spring Boot Mail implementation
+  - Service-layer email functionality (tested and working)
+  - Ready for OTP verification and notifications
+
+- **Database Optimizations**:
+  - Schema-level performance improvements
+  - Proper indexing for geospatial queries
+  - Optimized entity relationships
+
+## 🔧 Tech Stack
 
 - **Language**: Java 21
-- **Framework**: Spring Boot 3.x
+- **Framework**: Spring Boot 3.5.0
+- **Security**: 
+  - Spring Security
+  - JWT (JSON Web Tokens)
 - **Persistence**: 
   - Spring Data JPA
   - PostgreSQL with PostGIS
+- **Documentation**: 
+  - Swagger/OpenAPI 3.0
+  - SpringDoc OpenAPI
+- **Messaging**: 
+  - Spring Boot Mail
 - **Build Tool**: Maven
-- **Lombok**: For boilerplate reduction
+- **Utilities**: 
+  - Lombok
+  - ModelMapper
 
 ## 📁 Project Structure
 
 ```
 src/main/java/com/redizego/redi_ze_go/
+├── advices/           # Global exception handlers
 ├── configs/           # Configuration classes
-├── controllers/       # REST controllers (future)
+├── controllers/       # REST controllers
 ├── dtos/              # Data Transfer Objects
 ├── entities/          # JPA entities
 │   └── enums/        # Enumerations
 ├── exceptions/        # Custom exceptions
 ├── repositories/      # JPA repositories
+├── security/          # JWT and security components
 ├── services/          # Service interfaces
 │   └── impl/         # Service implementations
-└── strategies/       # Strategy pattern implementations
-    └── impl/
+├── strategies/        # Strategy pattern implementations
+│   └── impl/
+└── utils/            # Utility classes
 ```
 
 ## 🎯 Next Milestones
 
-### Phase 2: Core Functionality
-- [ ] Implement service layer
-- [ ] Add authentication & authorization
-- [ ] Implement real-time location tracking
-- [ ] Set up WebSocket for real-time updates
-
-### Phase 3: API & Integration
-- [ ] REST API endpoints
-- [ ] Integration with payment gateways
-- [ ] Notification service
-- [ ] Rate limiting and API documentation
+### Phase 3: Testing & Deployment
+- [ ] Unit testing all endpoints using Mockito
+- [ ] Integration testing of the application
+- [ ] Deploying over AWS with CI/CD enabled
+- [ ] Load testing and performance optimization
 
 ### Phase 4: Advanced Features
-- [ ] Ride scheduling
-- [ ] Multi-stop rides
-- [ ] Surge pricing
-- [ ] Advanced analytics
+- [ ] Real-time location tracking with WebSocket
+- [ ] Offline booking capabilities
+- [ ] Weather-based fare calculation
 
 ## 🚀 How to Run
 
@@ -99,6 +128,11 @@ src/main/java/com/redizego/redi_ze_go/
    ```bash
    ./mvnw spring-boot:run
    ```
+
+4. **Access the API**
+   - **Swagger UI**: `http://localhost:8080/swagger-ui.html`
+   - **API Documentation**: `http://localhost:8080/v3/api-docs`
+   - **Application Health**: `http://localhost:8080/actuator/health`
 
 ## 👥 Contributing
 
