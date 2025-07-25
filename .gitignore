@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ###Properties Files###
-*.properties
+/home/script-sensei/Documents/Backend/Redizego/redizego-backend/src/main/resources/application.properties
