@@ -10,6 +10,9 @@ import org.locationtech.jts.geom.Point;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(indexes = {
+        @Index(name = "idx_driver_vehicle_id", columnList = "vehicle_id")
+})
 public class Driver {
 
     @Id
@@ -20,10 +23,12 @@ public class Driver {
 
     private Boolean isAvailable;
 
+    private String vehicleId;
+
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(columnDefinition = "geometry(Point, 4326)")
-    private Point location;
+    private Point currentLocation;
 }

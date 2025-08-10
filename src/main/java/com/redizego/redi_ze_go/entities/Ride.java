@@ -1,7 +1,6 @@
 package com.redizego.redi_ze_go.entities;
 
 import com.redizego.redi_ze_go.entities.enums.PaymentMethods;
-//import com.redizego.redi_ze_go.entities.enums.RideRequestStatus;
 import com.redizego.redi_ze_go.entities.enums.RideStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,6 +15,10 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(indexes = {
+        @Index(name = "idx_ride_rider",columnList = "rider_id"),
+        @Index(name = "idx_ride_driver",columnList = "driver_id")
+})
 public class Ride {
 
     @Id
@@ -48,5 +51,7 @@ public class Ride {
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
+
+    private String otp;
 }
 

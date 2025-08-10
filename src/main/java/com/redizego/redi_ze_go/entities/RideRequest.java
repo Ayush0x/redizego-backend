@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.locationtech.jts.geom.Point;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +15,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(indexes = {
+        @Index(name = "idx_rider",columnList = "rider_id")
+})
 public class RideRequest {
 
     @Id
@@ -40,4 +42,5 @@ public class RideRequest {
     @Enumerated(EnumType.STRING)
     private RideRequestStatus rideRequestStatus;
 
+    private Double fare;
 }
