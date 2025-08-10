@@ -13,6 +13,10 @@ public interface RiderService {
 
     RideRequestDto requestRide(RideRequestDto rideRequestDto);
 
+    RideRequestDto handleOnlineRideRequest(RideRequestDto rideRequestDto);
+
+    RideRequestDto handleOfflineRideRequest(RideRequestDto rideRequestDto);
+
     RideDto cancelRide(Long rideId);
 
     DriverDto rateDriver(Long driverId, Integer rating);

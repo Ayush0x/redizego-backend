@@ -1,10 +1,8 @@
 package com.redizego.redi_ze_go.services.impl;
 
-import com.redizego.redi_ze_go.dtos.DriverDto;
-import com.redizego.redi_ze_go.dtos.RideDto;
-import com.redizego.redi_ze_go.dtos.RideRequestDto;
-import com.redizego.redi_ze_go.dtos.RiderDto;
+import com.redizego.redi_ze_go.dtos.*;
 import com.redizego.redi_ze_go.entities.*;
+import com.redizego.redi_ze_go.entities.enums.PaymentMethods;
 import com.redizego.redi_ze_go.entities.enums.RideRequestStatus;
 import com.redizego.redi_ze_go.entities.enums.RideStatus;
 import com.redizego.redi_ze_go.exceptions.ResourceNotFoundException;
@@ -20,10 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
 import java.util.List;
 
 @Service
@@ -39,23 +40,20 @@ public class RiderServiceImpl implements RiderService {
     private final DriverService driverService;
     private final RatingService ratingService;
 
+    private final Double DOWNLOAD_SPEED_THRESHOLD = 256.0; // in Kbps
+    private final Double UPLOAD_SPEED_THRESHOLD = 512.0; // in Kbps
+
     @Override
     @Transactional
     public RideRequestDto requestRide(RideRequestDto rideRequestDto) {
-        Rider rider=getCurrentRider();
-        RideRequest rideRequest=modelMapper.map(rideRequestDto,RideRequest.class);
-        rideRequest.setRideRequestStatus(RideRequestStatus.PENDING);
-        rideRequest.setRider(rider);
-
-        Double fare=rideStrategyManager.rideFareCalculationStrategy().calculateFare(rideRequest);
-        rideRequest.setFare(fare);
-
-        RideRequest savedRideRequest=rideRequestRepository.save(rideRequest);
-
-        List<Driver> drivers=rideStrategyManager
-                .driverMatchingStrategy(rider.getRating()).findMatchingDrivers(rideRequest);
-
-        return modelMapper.map(savedRideRequest,RideRequestDto.class);
+        if(rideStrategyManager.networkStrategy().isNetworkWeak(DOWNLOAD_SPEED_THRESHOLD, UPLOAD_SPEED_THRESHOLD)) {
+            log.error("Network is weak, swwitching to offline mode");
+            return handleOfflineRideRequest(rideRequestDto);
+        }
+        else {
+            log.info("Network is strong, switching to online mode");
+            return handleOnlineRideRequest(rideRequestDto);
+        }
     }
 
     @Override
@@ -125,5 +123,59 @@ public class RiderServiceImpl implements RiderService {
         return riderRepository.findByUser(user)
                 .orElseThrow(()->
                         new ResourceNotFoundException("Rider not found with id "+ user.getId()));
+    }
+
+    @Override
+    public RideRequestDto handleOnlineRideRequest(RideRequestDto rideRequestDto) {
+        Rider rider=getCurrentRider();
+        RideRequest rideRequest=modelMapper.map(rideRequestDto,RideRequest.class);
+        rideRequest.setRideRequestStatus(RideRequestStatus.PENDING);
+        rideRequest.setRider(rider);
+
+        Double fare=rideStrategyManager.rideFareCalculationStrategy().calculateFare(rideRequest);
+        rideRequest.setFare(fare);
+
+        RideRequest savedRideRequest=rideRequestRepository.save(rideRequest);
+
+        List<Driver> drivers=rideStrategyManager
+                .driverMatchingStrategy(rider.getRating()).findMatchingDrivers(rideRequest);
+
+        return modelMapper.map(savedRideRequest,RideRequestDto.class);
+    }
+
+    @Retryable(
+            value = {RuntimeException.class},
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 2000, multiplier = 1.5) // Retry with exponential backoff
+    )
+    @Override
+    public RideRequestDto handleOfflineRideRequest(RideRequestDto rideRequestDto) {
+        log.info("Handling offline ride request");
+
+        PointDto pickupLocation = rideRequestDto.getPickupLocation();
+        PointDto dropLocation = rideRequestDto.getDestinationLocation();
+        if(pickupLocation==null || dropLocation==null){
+            throw new RuntimeException("Pickup and drop locations cannot be null for offline ride request");
+        }
+
+        if(pickupLocation==dropLocation){
+            throw new RuntimeException("Pickup and drop locations cannot be same for offline ride request");
+        }
+
+        log.info("Pickup Location: {}, Drop Location: {}", pickupLocation, dropLocation);
+
+        Rider rider = getCurrentRider();
+        RideRequest rideRequest = modelMapper.map(rideRequestDto, RideRequest.class);
+
+        rideRequest.setRideRequestStatus(RideRequestStatus.PENDING);
+        rideRequest.setRider(rider);
+
+        Double fare = rideStrategyManager.rideFareCalculationStrategy().calculateFare(rideRequest);
+        rideRequest.setFare(fare);
+        rideRequest.setPaymentMethod(PaymentMethods.CASH);
+
+        RideRequest savedRideRequest = rideRequestRepository.save(rideRequest);
+
+        return modelMapper.map(savedRideRequest, RideRequestDto.class);
     }
 }

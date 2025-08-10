@@ -28,7 +28,7 @@ public class AuthController {
         return new ResponseEntity<>(authService.signup( signupDto ), HttpStatus.CREATED);
     }
 
-    @Secured("ROLE_ADMIN")
+//    @Secured("ROLE_ADMIN")
     @PostMapping("/onboard-driver/{user-id}")
     public ResponseEntity<DriverDto> onboardDriver(@PathVariable("user-id") Long userId, @RequestBody OnboardDriverDto onboardDriverDto){
         return new ResponseEntity<>(authService.

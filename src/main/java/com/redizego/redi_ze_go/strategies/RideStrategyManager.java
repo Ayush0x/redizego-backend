@@ -1,9 +1,6 @@
 package com.redizego.redi_ze_go.strategies;
 
-import com.redizego.redi_ze_go.strategies.impl.DriverMatchingHighestRatedDriverStrategy;
-import com.redizego.redi_ze_go.strategies.impl.DriverMatchingNearestDriverStrategy;
-import com.redizego.redi_ze_go.strategies.impl.RideFareDefaultFareCalculationStrategy;
-import com.redizego.redi_ze_go.strategies.impl.RideFareSurgePricingFareCalculationStrategy;
+import com.redizego.redi_ze_go.strategies.impl.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +14,7 @@ public class RideStrategyManager {
     private final DriverMatchingNearestDriverStrategy driverMatchingNearestDriverStrategy;
     private final RideFareDefaultFareCalculationStrategy rideFareDefaultFareCalculationStrategy;
     private final RideFareSurgePricingFareCalculationStrategy rideFareSurgePricingFareCalculationStrategy;
+    private final NetworkStrategyImpl networkStrategy;
 
     public DriverMatchingStrategy driverMatchingStrategy(double riderRating)
     {
@@ -44,5 +42,9 @@ public class RideStrategyManager {
         else {
             return rideFareDefaultFareCalculationStrategy;
         }
+    }
+
+    public NetworkStrategyImpl networkStrategy() {
+        return networkStrategy;
     }
 }
